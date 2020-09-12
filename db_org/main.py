@@ -26,7 +26,7 @@ month = '{:02d}'.format(now.month)
 day = '{:02d}'.format(now.day)
 
 PeopleData = {f"{year}-{month}-{day}":all_people}
-print(PeopleData)
+
 final = {
     "CameraID":CameraID,
     "CRS":CRS,
