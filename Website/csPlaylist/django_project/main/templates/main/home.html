@@ -1,0 +1,58 @@
+{% extends "main/base.html" %}
+{% block content %}
+<main role="main">
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+        <div class="container">
+          <div class="carousel-caption text-left">
+            <h1>Feel Safe Now.</h1>
+            <p>Thermal Check is a revolutionary piece of technology with automates the checking of temperatures as well as helps social distance through the use of ML.</p>
+            <p><a class="btn btn-lg btn-danger" href="{% url 'register' %}" role="button">Sign up today</a></p>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+
+
+  <!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- Wrap the rest of the page in another container to center all the content. -->
+
+  <div class="container marketing">
+
+    <!-- Three columns of text below the carousel -->
+    <div class="row pt-5 text-center">
+      <div class="col-lg-6">
+        <h2 class="text-danger">Be Safe!</h2>
+        <p>Thermal Check prevents the spread of COVID-19 and any other sickness in any place. Just attach the camera in a room where everyone is visible, and let it be your gaurd against sickness.</p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-6">
+        <h2 class="text-danger">Have Protection!</h2>
+        <p>Thermal Check is there for you. It automates the system of taking temperatures through the use of Machine Learning and A Thermal Camera. It addition, it checks how far people are social distances away from each other. </p>
+      </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+
+  </div><!-- /.container -->
+
+
+  <!-- FOOTER -->
+  <footer class="container">
+    <p style="text-align:center;">&copy; 2020 Company, Inc. &middot;</p>
+  </footer>
+</main>
+
+{% endblock content %}
