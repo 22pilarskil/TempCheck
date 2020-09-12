@@ -12,7 +12,7 @@ class camera1(AsyncWebsocketConsumer):
     async def connect(self):
         await self.channel_layer.group_add("camera1", self.channel_name)
         await self.accept()
-        message("yeet")
+        #message("yeet")
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("security", self.channel_name)
