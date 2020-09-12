@@ -19,6 +19,30 @@ def capture(flip_v = False, device = "/dev/spidev0.1"):
 
 os.system("sh model_download.sh")
 
+def calc_overlap(bounds):
+    nbrs = NearestNeighbors(n_neighbors=2, algorithm='ball_tree').fit(bounds)
+    distances, indices = nbrs.kneighbors(bounds)
+    mask = np.ma.masked_equal(distances, 0.0, copy=False)
+    min_dist = int(np.argmin(mask) / 2)
+
+    indices_ = indices[min_dist]
+
+    rect1 = bounds[indices_[0]]
+    rect1_area = abs((rect1[2] - rect1[0]) * (rect1[3] - rect1[1]))
+
+    rect2 = bounds[indices_[1]]
+    rect2_area = abs((rect2[2] - rect2[0]) * (rect2[3] - rect2[1]))
+
+    overlap_area = abs((max(rect1[1], rect2[1]) - min(rect1[3], rect2[3])) *
+        (max(rect1[2], rect2[2]) - max(rect1[0], rect2[0])))
+    overlap_percentage = overlap_area / min(rect1_area, rect2_area)
+
+    if not len(bounds) == 1 and (overlap_percentage > .5 or max(rect1_area, rect2_area) / min(rect1_area, rect2_area) > 1.3):
+        del(bounds[0 if rect1_area < rect2_area else 1])
+        calc_overlap(bounds)
+    else: 
+        return bounds
+
 def build_model(model_path, output_tensor_names, input_tensor_name, session="tf", placeholder=None):
     graph_def = None
 
@@ -59,6 +83,8 @@ while(True):
     boxes, scores, classes = zip(*(list(filter(lambda x: sum(x[0]) > 0 and x[2] == 1 and x[1] > .5, combined)))) 
     for box in boxes:
         bounds.append([int(box[i] * img.shape[i%2]) for i in range(len(box))])
+
+    bounds = calc_overlap(bounds) if len(bounds) > 1 else bounds
 
     for bound in bounds:
         color=(0,255,0) 
