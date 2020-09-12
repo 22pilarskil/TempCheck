@@ -40,12 +40,4 @@ def emailMessage(cameraID, emails):
 
 
 
-
-
-# phoneNumb = ['+1 917 510 4702', '+1 (917) 923-8041']
-cameraID = "adsfasjfl"
-emails = ["rekhi.zayn@gmail.com", "liampilarski@gmail.com"]
-emailMessage(cameraID, emails)
-# textMessage(cameraID, phoneNumb)
-
 	

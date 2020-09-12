@@ -8,9 +8,8 @@ import time
 
 class camera1(AsyncWebsocketConsumer):
 
-	too_close = False
-
-	async def connect(self):
+    too_close = False
+    async def connect(self):
         await self.channel_layer.group_add("camera1", self.channel_name)
         await self.accept()
         message("yeet")
@@ -19,8 +18,8 @@ class camera1(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard("security", self.channel_name)
 
     async def receive(self, text_data):
-    	print("reciveing data")
-    	data = json.loads(text_data)
+        print("reciveing data")
+        data = json.loads(text_data)
         print(data)
 
     async def message(self, event):
@@ -30,9 +29,9 @@ class camera1(AsyncWebsocketConsumer):
 
 class camera2(AsyncWebsocketConsumer):
 
-	too_close = False
+    too_close = False
 
-	async def connect(self):
+    async def connect(self):
         await self.channel_layer.group_add("camera1", self.channel_name)
         await self.accept()
 
@@ -40,8 +39,8 @@ class camera2(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard("security", self.channel_name)
 
     async def receive(self, text_data):
-    	print("reciveing data")
-    	data = json.loads(text_data)
+        print("reciveing data")
+        data = json.loads(text_data)
         print(data)
 
     async def message(self, event):
