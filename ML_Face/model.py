@@ -51,8 +51,9 @@ model = build_model(
 while(True):
     image = capture(flip_v = False, device = "/dev/spidev0.1")
     expanded = np.expand_dims(img, axis=0)
+    stretched = np.repeat(expanded, 3, axis=4)
 
-    boxes, scores, classes = list(model["sess"].run(model["output_tensors"], feed_dict={model["input_tensor"]: expanded}))
+    boxes, scores, classes = list(model["sess"].run(model["output_tensors"], feed_dict={model["input_tensor"]: stretched}))
     combined = zip(np.squeeze(boxes), np.squeeze(scores), np.squeeze(classes))
     bounds = []
     boxes, scores, classes = zip(*(list(filter(lambda x: sum(x[0]) > 0 and x[2] == 1 and x[1] > .5, combined)))) 
