@@ -1,10 +1,10 @@
 import sys
 import numpy as np
 import cv2
-from mtcnn import MTCNN
+#from mtcnn import MTCNN
 from pylepton.Lepton3 import Lepton3
 
-mtcnn = MTCNN()
+#mtcnn = MTCNN()
 
 def capture(flip_v = False, device = "/dev/spidev0.1"):
   with Lepton3(device) as l:
@@ -33,10 +33,10 @@ if __name__ == '__main__':
   while(True):
     image = capture(flip_v = options.flip_v, device = options.device)
     cv2.imwrite("image.jpg", image)
-    results = mtcnn.detect_faces(image)
-    for result in results:
-      box = result['box']
-      cv2.rectangle(image, (box[0], box[1]),(box[0]+box[2], box[1]+box[3]), color=(0, 255, 0), thickness=4)
+    #results = mtcnn.detect_faces(image)
+    #for result in results:
+      #box = result['box']
+      #cv2.rectangle(image, (box[0], box[1]),(box[0]+box[2], box[1]+box[3]), color=(0, 255, 0), thickness=4)
     cv2.imshow("Image", image)
     if cv2.waitKey(1) & 0xFF == ord("q"):
       break

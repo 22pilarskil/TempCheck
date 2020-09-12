@@ -28,13 +28,13 @@ def build_model(model_path, output_tensor_names, input_tensor_name, session="tf"
 
 
 model = build_model(
-        model_path="/Users/michaelpilarski/Desktop/frozen_inference_graph.pb",
+        model_path="frozen_inference_graph.pb",
         output_tensor_names=["detection_boxes:0", "detection_scores:0", "detection_classes:0"],
         input_tensor_name="image_tensor:0",
         placeholder=(1, None, None, 3)
         )
 
-img = cv2.imread("/Users/michaelpilarski/Desktop/thermal.jpg")
+img = cv2.imread("image.jpg")
 
 expanded = np.expand_dims(img, axis=0)
 
