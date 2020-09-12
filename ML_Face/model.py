@@ -1,8 +1,9 @@
 import tensorflow as tf 
 import numpy as np 
 import cv2
+import os
 
-
+os.system("sh model_download.sh")
 
 def build_model(model_path, output_tensor_names, input_tensor_name, session="tf", placeholder=None):
     graph_def = None
