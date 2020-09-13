@@ -1,5 +1,6 @@
 import tensorflow as tf 
-import numpy as np 
+import numpy as np
+import RPi.GPIO as GPIO
 import cv2
 import os
 import time
@@ -8,8 +9,14 @@ import sys
 from pylepton.Lepton3 import Lepton3
 import pymongo
 import datetime as dt
+from termcolor import cprint
 #from pylepton import Lepton
 #mtcnn = MTCNN()
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+buzzer=23 
+GPIO.setup(buzzer,GPIO.OUT)
 
 CameraID = "824209"
 
@@ -29,7 +36,6 @@ def capture(flip_v = False, device = "/dev/spidev0.1"):
     cv2.flip(a,0,a)
   cv2.normalize(a, a, 0, 65535, cv2.NORM_MINMAX)
   np.right_shift(a, 8, a)
-  print(b)
   return np.uint8(a), b
 
 os.system("sh model_download.sh")
@@ -89,9 +95,6 @@ model = build_model(
 
 while(True):
     img, temp = capture(flip_v = False, device = "/dev/spidev0.1")
-    print(img.shape)
-    print(temp.shape)
-    print('next')
     expanded = np.expand_dims(img, axis=0)
     stretched = np.repeat(expanded, 3, axis=3)
     temperatures = []
@@ -113,8 +116,8 @@ while(True):
             temperatures.append(temp.flatten()[0])
             temp_ = temp[bound[0]:bound[2], bound[1]:bound[3]].flatten()
             toptenpercent = np.mean(temp_[np.argsort(temp_)[-int(len(temp.flatten())*.1):]])
-            calculation = (toptenpercent*0.01)-273.15
-            print(calculation)
+            calculation = (toptenpercent*0.01)-273.15+7
+            cprint("Temperature: {}".format(calculation), 'green')
             # calculation = sum(toptenpercent)/len(toptenpercent)
             # faceAverage = sum(temp_)/len(temp_)
             # print(calculation)
@@ -124,14 +127,18 @@ while(True):
             if calculation >= 38:
                 isSick = True
             peopleData.append([calculation, isSick])
-        
+        if len(bounds) > 1:
+            GPIO.output(buzzer, GPIO.HIGH)
+        else:
+            GPIO.output(buzzer, GPIO.LOW)
+        cprint("Number of people: {}".format(len(bounds)), 'red')
         final = {
             "CameraID":CameraID,
             "PeopleData":peopleData,
             "NumbOfPeople":len(peopleData),
         }
         if mainCollection.find_one({"CameraID":CameraID}):
-            mainCollection.replace({"CameraID":CameraID}, final)
+            mainCollection.replace_one({"CameraID":CameraID}, final)
         else:
             mainCollection.insert_one(final)
 
